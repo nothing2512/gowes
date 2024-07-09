@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"fmt"
 	"net"
 	"net/http"
@@ -24,6 +25,29 @@ func Init(secret, iv string) *Server {
 	s := &Server{make(map[string]*websocket.Conn), secret, iv, nil}
 
 	http.HandleFunc("/connect", s.connect)
+	http.HandleFunc("/send", func(w http.ResponseWriter, r *http.Request) {
+		var m Message
+		_ = json.NewDecoder(r.Body).Decode(&m)
+		if m.Command == "send" {
+			s.send(m)
+			w.Write([]byte("Sent"))
+		} else if m.Command == "command" {
+			token := m.Token
+			uid := s.decrypt(token)
+			if _, exists := s.clients[uid]; !exists {
+				w.Write([]byte("Unsent"))
+				return
+			}
+			if s.handle != nil {
+				var cmd Message
+				_ = json.Unmarshal([]byte(m.Message), &cmd)
+				s.handle(cmd)
+			}
+			w.Write([]byte("Sent"))
+		} else {
+			w.Write([]byte("Unsent"))
+		}
+	})
 
 	return s
 }

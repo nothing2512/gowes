@@ -1,4 +1,4 @@
-package gowes
+package main
 
 import (
 	"fmt"
