@@ -1,10 +1,11 @@
-package main
+package gowes
 
 import (
 	"fmt"
 	"log"
-	"main/client"
-	"main/server"
+
+	"github.com/nothing2512/gowes/client"
+	"github.com/nothing2512/gowes/server"
 )
 
 func main() {

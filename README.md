@@ -4,13 +4,13 @@ Golang Websocket : simple websocket plugins for Golang
 ## Example
 
 ```golang
-package main
+package github.com/nothing2512/gowes
 
 import (
 	"fmt"
 	"log"
-	"main/client"
-	"main/server"
+	"github.com/nothing2512/gowes/client"
+	"github.com/nothing2512/gowes/server"
 )
 
 func main() {

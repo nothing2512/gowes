@@ -1,4 +1,4 @@
-module main
+module github.com/nothing2512/gowes
 
 go 1.21.4
 
