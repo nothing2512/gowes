@@ -19,6 +19,9 @@ type Server struct {
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
 }
 
 func Init(secret, iv string) *Server {
@@ -58,7 +61,7 @@ func (s *Server) Start(baseUri string) {
 		panic(err)
 	}
 
-	fmt.Println("Listening On " + baseUri)
+	fmt.Println("Listening WebSocket On " + baseUri)
 	if err = http.Serve(ln, nil); err != nil {
 		panic(err)
 	}

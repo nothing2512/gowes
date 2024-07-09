@@ -5,13 +5,15 @@ import (
 	"log"
 
 	"github.com/nothing2512/gowes/client"
+	"github.com/nothing2512/gowes/examples"
 	"github.com/nothing2512/gowes/server"
 )
 
 func main() {
-	runServer()
-	client1()
-	client2("cfce2309-1026-462b-a13b-f76614cfec20")
+	// runServer()
+	// client1()
+	// client2("cfce2309-1026-462b-a13b-f76614cfec20")
+	examples.Run()
 }
 
 func client1() {

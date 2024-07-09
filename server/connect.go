@@ -40,9 +40,12 @@ func (s *Server) connect(w http.ResponseWriter, r *http.Request) {
 				uid := uuid.New().String()
 				fmt.Println("Connected: ", uid)
 				b, _ := json.Marshal(map[string]interface{}{
-					"id":    uid,
-					"token": s.encrypt(uid),
+					"id":      uid,
+					"token":   s.encrypt(uid),
+					"command": "connect",
 				})
+				fmt.Println(uid)
+				fmt.Println(s.encrypt(uid))
 				err := conn.WriteMessage(t, b)
 				s.clients[uid] = conn
 				if err != nil {

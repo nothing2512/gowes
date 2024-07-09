@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" value="id" disabled id="id">
+    <input type="text" value="token" disabled id="token">
+    <input type="text" placeholder="To" id="to">
+    <input type="text" placeholder="Message" id="message">
+    <input type="button" value="Send" id="send">
+    <div id="messages">
+
+    </div>
+    <script>
+        const ws = new WebSocket("ws://0.0.0.0:8080/connect");
+        ws.onopen = function(evt) {
+            let p = document.createElement("p")
+            p.textContent = "Connected"
+            document.getElementById("messages").appendChild(p)
+            ws.send(JSON.stringify({command: "connect"}))
+        };
+
+        ws.onmessage = function(evt) {
+            let data = JSON.parse(evt.data)
+            if (data.command == "connect") {
+                document.getElementById("id").value = data.id
+                document.getElementById("token").value = data.token
+            } else {
+                let p = document.createElement("p")
+                p.textContent = data.message
+                document.getElementById("messages").appendChild(p)
+            }
+        }
+
+        document.getElementById("send").onclick = function() {
+            ws.send(JSON.stringify({
+                command: "send",
+                to: document.getElementById("to").value,
+                message: JSON.stringify({
+                    message: document.getElementById("message").value
+                }),
+                token: document.getElementById("token").value
+            }))
+        }
+
+    </script>
+</body>
+</html>
